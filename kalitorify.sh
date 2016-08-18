@@ -73,28 +73,32 @@ function check_root {
 
 # disable ufw (if is installed and active)
 function disable_ufw {
-	if ufw status | grep -q active$; then
-		printf "${blue}::${endc} ${green}Firewall ufw is active, disabling...${endc}\n"
-		ufw disable > /dev/null 2>&1
-		printf "${blue}::${endc} ${green}ufw disabled${endc}\n"
-		sleep 3
-	else
-		ufw status | grep -q inactive$;
-		printf "${blue}::${endc} ${green}Firewall ufw is inactive, continue...${endc}\n"
-	fi
+    if hash ufw 2>/dev/null; then
+        if ufw status | grep -q active$; then
+            printf "${blue}::${endc} ${green}Firewall ufw is active, disabling...${endc}\n"
+            ufw disable > /dev/null 2>&1
+            printf "${blue}::${endc} ${green}ufw disabled${endc}\n"
+            sleep 3
+        else
+           ufw status | grep -q inactive$;
+           printf "${blue}::${endc} ${green}Firewall ufw is inactive, continue...${endc}\n"
+        fi
+    fi
 }
 
 
-# enable ufw 
+# enable ufw
 function enable_ufw {
-	if ufw status | grep -q inactive$; then
-		printf "${blue}::${endc} ${green}Enabling firewall ufw${endc}\n"
-		ufw enable > /dev/null 2>&1
-		printf "${blue}::${endc} ${green}ufw enabled${endc}\n"
-		sleep 3
-	else
-		printf "${blue}::${endc} ${green}Firewall ufw isn't installed, continue...${endc}\n"
-	fi
+    if hash ufw 2>/dev/null; then
+        if ufw status | grep -q inactive$; then
+            printf "${blue}::${endc} ${green}Enabling firewall ufw${endc}\n"
+            ufw enable > /dev/null 2>&1
+            printf "${blue}::${endc} ${green}ufw enabled${endc}\n"
+            sleep 3
+        else
+            printf "${blue}::${endc} ${green}Firewall ufw isn't installed, continue...${endc}\n"
+        fi
+    fi
 }
 
 
